@@ -1,28 +1,37 @@
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 const initialState = {
-    status: 'succeeded' as RequestStatusType,
-    error: null as string | null
-
+    mobilePhone: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
 }
 
 type InitialStateType = typeof initialState
 
 export const signUpReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
-
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case "APP/SET-ERROR":
-            return {...state, error: action.error}
+        case 'SIGNUP/SET-MOBILE-PHONE':
+            return {...state, mobilePhone: action.mobilePhone}
+        case "SIGNUP/SET-EMAIL":
+            return {...state, email: action.email}
+        case "SIGNUP/SET-PASSWORD":
+            return {...state, password: action.password}
+        case "SIGNUP/SET-CONFIRM-PASSWORD":
+            return {...state, confirmPassword: action.confirmPassword}
         default:
             return state
     }
 }
 
-export const setAppReducerAC = (status: RequestStatusType) => ({type: "APP/SET-STATUS", status} as const)
-export const setErrorAC = (error: null | string) => ({type: "APP/SET-ERROR", error} as const)
-export type SetAppActionType = ReturnType<typeof setAppReducerAC>;
-export type SetErrorActionType = ReturnType<typeof setErrorAC>;
+export const setMobilePhoneAC = (mobilePhone: string) => ({type: "SIGNUP/SET-MOBILE-PHONE", mobilePhone} as const)
+export const setEmailAC = (email: string) => ({type: "SIGNUP/SET-EMAIL", email} as const)
+export const setPasswordAC = (password: string) => ({type: "SIGNUP/SET-PASSWORD", password} as const)
+export const setConfirmPasswordAC = (confirmPassword: string) => ({type: "SIGNUP/SET-CONFIRM-PASSWORD", confirmPassword} as const)
 
-export type AppActionsType = SetAppActionType | SetErrorActionType
+
+export type AppActionsType =
+    | ReturnType<typeof setMobilePhoneAC>
+    | ReturnType<typeof setEmailAC>
+    | ReturnType<typeof setPasswordAC>
+    | ReturnType<typeof setConfirmPasswordAC>
