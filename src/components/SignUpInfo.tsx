@@ -1,67 +1,123 @@
-import React, {ChangeEvent, useState} from "react";
+import React from "react";
 import style from './SignUpInfo.module.sass'
-import {TextField} from "@material-ui/core";
+import {Button, FormControl, TextField} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../store/store";
-import {setConfirmPasswordAC, setEmailAC, setMobilePhoneAC, setPasswordAC} from "../store/signUp-reducer";
+import {setDataAC} from "../store/signUp-reducer";
+import {useFormik} from "formik";
+import sсhema from '../sсhema.json'
 
-export const SignUpInfo = () => {
+type FormikErrorType = {
+    mobilePhone?: string
+    email?: string
+    password?: string
+    confirmPassword?: string
+}
+
+type SignUpInfoType = {
+    setStep: (step: number) => void
+}
+
+export const SignUpInfo = (props: SignUpInfoType) => {
+
+    const dispatch = useDispatch()
 
     const mobilePhone = useSelector<AppRootStateType, string>(state => state.signUp.mobilePhone)
     const email = useSelector<AppRootStateType, string>(state => state.signUp.email)
     const password = useSelector<AppRootStateType, string>(state => state.signUp.password)
     const confirmPassword = useSelector<AppRootStateType, string>(state => state.signUp.confirmPassword)
 
-    let [error, setError] = useState<string | null>(null)
-
-    const dispatch = useDispatch()
-
-    const mobilePhoneOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setMobilePhoneAC(e.currentTarget.value))
-    }
-    const emailOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setEmailAC(e.currentTarget.value))
-    }
-    const passwordOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setPasswordAC(e.currentTarget.value))
-    }
-    const confirmPasswordOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setConfirmPasswordAC(e.currentTarget.value))
+    const initialValues  ={
+        mobilePhone,
+        email,
+        password,
+        confirmPassword
     }
 
+    const minLength = sсhema.password.minLength
+    const maxLength = sсhema.password.maxLength
+    const mobilePhoneRegExp = new RegExp(sсhema.mobilePhone.regExp)
+    const emailRegExp = new RegExp(sсhema.email.regExp)
+
+    const formik = useFormik({
+        initialValues,
+        validate: (values) => {
+            const errors: FormikErrorType = {};
+            if (!values.mobilePhone) {
+                errors.mobilePhone = 'Required';
+            } else if (!mobilePhoneRegExp.test(values.mobilePhone)) {
+                errors.mobilePhone = 'Invalid mobile phone';
+            }
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!emailRegExp.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+            if (!values.password) {
+                errors.password = 'Required';
+            } else if (values.password.length < +minLength) {
+                errors.password = 'Minimum number of characters 8';
+            } else if (values.password.length > +maxLength) {
+                errors.password = 'Maximum number of characters 20';
+            }
+            if (!values.confirmPassword) {
+                errors.confirmPassword = 'Required';
+            } else if (values.password !== values.confirmPassword) {
+                errors.confirmPassword = 'Invalid confirm password';
+            }
+            return errors;
+        },
+        onSubmit: values => {
+            console.log('onSubmit', {values})
+            dispatch(setDataAC(values))
+            props.setStep(2)
+        },
+    })
     return (
         <div className={style.wrapperSignUp}>
-            <TextField variant="outlined"
-                       error={!!error}
-                       value={mobilePhone}
-                       onChange={mobilePhoneOnChangeHandler}
-                       label="Mobile phone"
-                       helperText={error}
-            />
-            <TextField variant="outlined"
-                       error={!!error}
-                       value={email}
-                       onChange={emailOnChangeHandler}
-                       label="Email"
-                       helperText={error}
-            />
-            <TextField variant="outlined"
-                       error={!!error}
-                       value={password}
-                       onChange={passwordOnChangeHandler}
-                       label="Password"
-                       helperText={error}
-            />
-            <TextField variant="outlined"
-                       error={!!error}
-                       value={confirmPassword}
-                       onChange={confirmPasswordOnChangeHandler}
-                       label="Repeat Password"
-                       helperText={error}
-            />
-            <div>
-                <button>Next</button>
-            </div>
+            <form onSubmit={formik.handleSubmit}>
+                <FormControl>
+                    <TextField variant="outlined"
+                               type='tel'
+                               placeholder='+375 __ ___ __ __'
+                               name="mobilePhone"
+                               value={formik.values.mobilePhone}
+                               onChange={formik.handleChange}
+                               label="Mobile phone"
+                               helperText={formik.errors.mobilePhone}
+                               margin="dense"
+                    />
+                    <TextField variant="outlined"
+                               name="email"
+                               value={formik.values.email}
+                               onChange={formik.handleChange}
+                               label="Email"
+                               helperText={formik.errors.email}
+                               margin="dense"
+                    />
+                    <TextField variant="outlined"
+                               name="password"
+                               // type='password'
+                               value={formik.values.password}
+                               onChange={formik.handleChange}
+                               label="Password"
+                               helperText={formik.errors.password}
+                               margin="dense"
+                    />
+                    <TextField variant="outlined"
+                               name="confirmPassword"
+                               // type='password'
+                               value={formik.values.confirmPassword}
+                               onChange={formik.handleChange}
+                               label="Confirm password"
+                               helperText={formik.errors.confirmPassword}
+                               margin="dense"
+                    />
+                    <Button className={style.submitButton} type={'submit'} variant={'contained'} color={'primary'}>
+                        Next
+                    </Button>
+                </FormControl>
+            </form>
         </div>
     )
 }
