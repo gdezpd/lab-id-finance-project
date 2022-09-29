@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {SignUpInfo} from "./SignUpInfo";
 import {PersonalInfo} from "./PersonalInfo";
 import style from './Info.module.sass'
+import {Complete} from "./Complete";
 
 export const Info = () => {
 
@@ -13,7 +14,9 @@ export const Info = () => {
             <PersonalInfo setStep={setStep}/>
             {/*{step === 1*/}
             {/*    ? <SignUpInfo setStep={setStep}/>*/}
-            {/*    : <PersonalInfo setStep={setStep}/>}*/}
+            {/*    : step === 2 ? <PersonalInfo setStep={setStep}/>*/}
+            {/*        : <Complete />*/}
+            {/*}*/}
         </div>
     )
 }

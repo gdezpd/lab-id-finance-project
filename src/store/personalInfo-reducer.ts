@@ -1,14 +1,12 @@
 import sсhema from "../sсhema.json";
-import {BirthdayType, HobbiesType} from "../components/PersonalInfo";
+import {HobbiesType} from "../components/PersonalInfo";
 
 const hobbesArray = sсhema.hobby.anyOf
 const oceanArray = sсhema.ocean.oneOf
 //const hobbies = Object.fromEntries(hobbesArray.map((name) => ({[name]: false})))
 
 
-const hobbies = Object.assign({},...hobbesArray.map((name) => ({[name]: false})))
-const test = {'hob': true}
-console.log(hobbies)
+const hobbies = Object.assign({}, ...hobbesArray.map((name) => ({[name]: false})))
 const favoriteOcean = oceanArray.map((ocean) => ocean)
 
 
@@ -16,7 +14,6 @@ const initialState = {
     firstName: '',
     lastName: '',
     gender: '',
-    // birthday: {},
     favoriteOcean: '',
     hobbies,
 }
