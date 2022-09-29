@@ -11,6 +11,7 @@ const favoriteOcean = oceanArray.map((ocean) => ocean)
 
 
 const initialState = {
+    openModal: false,
     firstName: '',
     lastName: '',
     gender: '',
@@ -27,13 +28,13 @@ export const personalInfoReducer = (state: InitialStateType = initialState, acti
                 ...state,
                 lastName: action.lastName,
                 firstName: action.firstName,
-                // hobbies: (() => {
-                //     return [["sdsd"]: false]
-                // }()),
+                // hobbies: action.gender,
                 favoriteOcean: action.favoriteOcean,
-                // [action.task.todoListId]: [action.task, ...{...state}[action.task.todoListId]]
-                // [hobbies]: {action.hobbies === hobbies ? hobbies},
                 gender: action.gender
+            }
+        case 'PERSONAL-INFO/OPEN-MODAL':
+            return {
+                ...state, openModal: action.value
             }
         // case "PERSONAL-INFO/SET-HOBBIES":
         //     return {...state, action.payload}
@@ -54,6 +55,10 @@ export const setPersonalDataAC = ({
     favoriteOcean,
     // hobbies
 } as const)
+export const setOpenModalAC = (value: boolean) => ({
+    type: "PERSONAL-INFO/OPEN-MODAL",
+    value
+} as const)
 // export const setPersonalHobbiesAC = (payload: HobbiesType) => ({
 //     type: "PERSONAL-INFO/SET-HOBBIES",
 //     payload
@@ -70,3 +75,4 @@ type DataTypes = {
 
 export type AppActionsType =
     | ReturnType<typeof setPersonalDataAC>
+    | ReturnType<typeof setOpenModalAC>
