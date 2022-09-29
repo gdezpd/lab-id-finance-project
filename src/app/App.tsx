@@ -24,7 +24,7 @@ function App() {
                 <Info/>
             </main>
 
-            <footer className={style.footer}></footer>
+            {/*<footer className={style.footer}></footer>*/}
         </div>
     </div>
 }

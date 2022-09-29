@@ -5,12 +5,9 @@ const initialState = {
     confirmPassword: '',
 }
 
-type InitialStateType = typeof initialState
-
 export const signUpReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'SIGN-UP/SET-DATA':
-            console.log('signUpReducer', {action})
             return {
                 ...state,
                 mobilePhone: action.mobilePhone,
@@ -18,17 +15,12 @@ export const signUpReducer = (state: InitialStateType = initialState, action: Ap
                 password: action.password,
                 confirmPassword: action.confirmPassword
             }
-        // case "SIGNUP/SET-EMAIL":
-        //     return {...state, email: action.email}
-        // case "SIGNUP/SET-PASSWORD":
-        //     return {...state, password: action.password}
-        // case "SIGNUP/SET-CONFIRM-PASSWORD":
-        //     return {...state, confirmPassword: action.confirmPassword}
         default:
             return state
     }
 }
 
+// ActionCreator
 export const setDataAC = ({mobilePhone, email, password, confirmPassword}: SetDataType) => ({
     type: "SIGN-UP/SET-DATA",
     mobilePhone,
@@ -36,10 +28,9 @@ export const setDataAC = ({mobilePhone, email, password, confirmPassword}: SetDa
     password,
     confirmPassword
 } as const)
-// export const setMobilePhoneAC = (mobilePhone: string) => ({type: "SIGNUP/SET-MOBILE-PHONE", mobilePhone} as const)
-// export const setEmailAC = (email: string) => ({type: "SIGNUP/SET-EMAIL", email} as const)
-// export const setPasswordAC = (password: string) => ({type: "SIGNUP/SET-PASSWORD", password} as const)
-// export const setConfirmPasswordAC = (confirmPassword: string) => ({type: "SIGNUP/SET-CONFIRM-PASSWORD", confirmPassword} as const)
+
+// Types
+type InitialStateType = typeof initialState
 
 type SetDataType = {
     mobilePhone: string, email: string, password: string, confirmPassword: string
@@ -47,6 +38,3 @@ type SetDataType = {
 
 export type AppActionsType =
     | ReturnType<typeof setDataAC>
-// | ReturnType<typeof setEmailAC>
-// | ReturnType<typeof setPasswordAC>
-// | ReturnType<typeof setConfirmPasswordAC>

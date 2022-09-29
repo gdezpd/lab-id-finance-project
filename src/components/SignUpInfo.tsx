@@ -41,34 +41,33 @@ export const SignUpInfo = (props: SignUpInfoType) => {
 
     const formik = useFormik({
         initialValues,
-        validate: (values) => {
-            const errors: FormikErrorType = {};
-            if (!values.mobilePhone) {
-                errors.mobilePhone = 'Required';
-            } else if (!mobilePhoneRegExp.test(values.mobilePhone)) {
-                errors.mobilePhone = 'Invalid mobile phone';
-            }
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (!emailRegExp.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
-            if (!values.password) {
-                errors.password = 'Required';
-            } else if (values.password.length < +minLength) {
-                errors.password = 'Minimum number of characters 8';
-            } else if (values.password.length > +maxLength) {
-                errors.password = 'Maximum number of characters 20';
-            }
-            if (!values.confirmPassword) {
-                errors.confirmPassword = 'Required';
-            } else if (values.password !== values.confirmPassword) {
-                errors.confirmPassword = 'Invalid confirm password';
-            }
-            return errors;
-        },
+        // validate: (values) => {
+        //     const errors: FormikErrorType = {};
+        //     if (!values.mobilePhone) {
+        //         errors.mobilePhone = 'Required';
+        //     } else if (!mobilePhoneRegExp.test(values.mobilePhone)) {
+        //         errors.mobilePhone = 'Invalid mobile phone';
+        //     }
+        //     if (!values.email) {
+        //         errors.email = 'Required';
+        //     } else if (!emailRegExp.test(values.email)) {
+        //         errors.email = 'Invalid email address';
+        //     }
+        //     if (!values.password) {
+        //         errors.password = 'Required';
+        //     } else if (values.password.length < +minLength) {
+        //         errors.password = 'Minimum number of characters 8';
+        //     } else if (values.password.length > +maxLength) {
+        //         errors.password = 'Maximum number of characters 20';
+        //     }
+        //     if (!values.confirmPassword) {
+        //         errors.confirmPassword = 'Required';
+        //     } else if (values.password !== values.confirmPassword) {
+        //         errors.confirmPassword = 'Invalid confirm password';
+        //     }
+        //     return errors;
+        // },
         onSubmit: values => {
-            console.log('onSubmit', {values})
             dispatch(setDataAC(values))
             props.setStep(2)
         },
