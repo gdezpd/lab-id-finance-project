@@ -15,6 +15,14 @@ export const signUpReducer = (state: InitialStateType = initialState, action: Ap
                 password: action.password,
                 confirmPassword: action.confirmPassword
             }
+        case 'SIGN-UP/SET-NULL-DATA':
+            return {
+                ...state,
+                mobilePhone: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            }
         default:
             return state
     }
@@ -28,6 +36,9 @@ export const setDataAC = ({mobilePhone, email, password, confirmPassword}: SetDa
     password,
     confirmPassword
 } as const)
+export const setNullDataAC = () => ({
+    type: "SIGN-UP/SET-NULL-DATA",
+} as const)
 
 // Types
 type InitialStateType = typeof initialState
@@ -38,3 +49,4 @@ type SetDataType = {
 
 export type AppActionsType =
     | ReturnType<typeof setDataAC>
+    | ReturnType<typeof setNullDataAC>
