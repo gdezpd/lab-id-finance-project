@@ -48,7 +48,7 @@ export default function CompleteModal() {
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
                         <ul>
-                            <li></li>
+                            {/*<li></li>*/}
                         </ul>
                     </Typography>
                 </Box>

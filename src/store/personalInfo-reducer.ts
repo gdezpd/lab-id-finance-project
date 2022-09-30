@@ -1,5 +1,4 @@
 import sсhema from "../sсhema.json";
-import {HobbiesType} from "../components/PersonalInfo";
 
 const hobbesArray = sсhema.hobby.anyOf
 const oceanArray = sсhema.ocean.oneOf
@@ -10,17 +9,27 @@ const hobbies = Object.assign({}, ...hobbesArray.map((name) => ({[name]: false})
 const favoriteOcean = oceanArray.map((ocean) => ocean)
 
 
-const initialState = {
+const initialState: InitialStateType = {
     openModal: false,
     firstName: '',
     lastName: '',
+    birthdayData: '',
     gender: '',
     favoriteOcean: '',
     hobbies,
 }
 
-type InitialStateType = typeof initialState
+// type InitialStateType = typeof initialState
 
+type InitialStateType = {
+    openModal: boolean,
+    firstName: string,
+    lastName: string,
+    birthdayData: string,
+    gender: string,
+    favoriteOcean: string,
+    hobbies: HobbiesType,
+}
 export const personalInfoReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'PERSONAL-INFO/SET-DATA':
@@ -28,7 +37,7 @@ export const personalInfoReducer = (state: InitialStateType = initialState, acti
                 ...state,
                 lastName: action.lastName,
                 firstName: action.firstName,
-                // hobbies: action.gender,
+                hobbies: action.dataHobbies,
                 favoriteOcean: action.favoriteOcean,
                 gender: action.gender
             }
@@ -42,19 +51,32 @@ export const personalInfoReducer = (state: InitialStateType = initialState, acti
             return state
     }
 }
+type PersonalDataType = {
+    firstName: string,
+    lastName: string,
+    gender: string,
+    birthdayData: string,
+    favoriteOcean: string,
+    dataHobbies: HobbiesType,
+}
 
-export const setPersonalDataAC = ({
-                                      firstName, lastName, gender,
-                                      // birthday,
-                                      favoriteOcean,
-                                      // hobbies
-                                  }: DataTypes
-) => ({
-    type: "PERSONAL-INFO/SET-DATA", firstName, lastName, gender,
-    // birthday,
+type ACType = PersonalDataType & {type: "PERSONAL-INFO/SET-DATA"}
+
+export const setPersonalDataAC  = ({
+        firstName, lastName, gender,
+        birthdayData,
+        favoriteOcean,
+        dataHobbies }: PersonalDataType
+): ACType => ({
+    type: "PERSONAL-INFO/SET-DATA",
+    firstName,
+    lastName,
+    gender,
+    birthdayData,
     favoriteOcean,
-    // hobbies
-} as const)
+    dataHobbies
+})
+
 export const setOpenModalAC = (value: boolean) => ({
     type: "PERSONAL-INFO/OPEN-MODAL",
     value
@@ -64,15 +86,19 @@ export const setOpenModalAC = (value: boolean) => ({
 //     payload
 // } as const)
 
-type DataTypes = {
+export type HobbiesType = {
+    [key: string]: boolean | string
+}
+
+export type FormDataType = {
     firstName: string,
     lastName: string,
     gender: string,
-    // birthday: BirthdayType,
+    birthdayData: string,
     favoriteOcean: string,
-    // hobbies: HobbiesTypeArray
 }
+export type DataTypes = FormDataType & { dataHobbies: HobbiesType }
 
 export type AppActionsType =
-    | ReturnType<typeof setPersonalDataAC>
+    | ACType
     | ReturnType<typeof setOpenModalAC>
